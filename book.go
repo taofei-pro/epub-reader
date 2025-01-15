@@ -30,14 +30,7 @@ func (p *Book) Files() []string {
 }
 
 func (p *Book) Chapters() []NavPoint {
-	points := make([]NavPoint, 0)
-	for _, pt := range p.Ncx.Points {
-		points = append(points, pt)
-		if len(pt.Points) > 0 {
-			points = append(points, pt.Points...)
-		}
-	}
-	return points
+	return p.Ncx.Points
 }
 
 func (p *Book) ChapterContent(n NavPoint) ([]byte, error) {
