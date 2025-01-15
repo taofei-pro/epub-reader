@@ -2,10 +2,7 @@ package epub
 
 import (
 	"archive/zip"
-	"bytes"
 	"io"
-
-	"github.com/wmentor/html"
 )
 
 func Open(fn string) (*Book, error) {
@@ -79,25 +76,4 @@ func Reader(filename string, onChapter func(chapter string, data []byte) bool) e
 	}
 
 	return nil
-}
-
-func ToTxt(filename string, output io.Writer) error {
-
-	notFirst := false
-
-	return Reader(filename, func(chapter string, data []byte) bool {
-
-		parser := html.New()
-		parser.Parse(bytes.NewReader(data))
-
-		if notFirst {
-			output.Write([]byte("\n\n"))
-		} else {
-			notFirst = true
-		}
-
-		output.Write(parser.Text())
-
-		return true
-	})
 }
