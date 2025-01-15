@@ -4,7 +4,6 @@ import (
 	"archive/zip"
 	"bytes"
 	"io"
-	"io/ioutil"
 
 	"github.com/wmentor/html"
 )
@@ -59,7 +58,7 @@ func Reader(filename string, onChapter func(chapter string, data []byte) bool) e
 		}
 		defer fd.Close()
 
-		return ioutil.ReadAll(fd)
+		return io.ReadAll(fd)
 	}
 
 	for _, pt := range bk.Ncx.Points {

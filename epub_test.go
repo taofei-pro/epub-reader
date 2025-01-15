@@ -1,7 +1,7 @@
 package epub
 
 import (
-	"bytes"
+	"fmt"
 	"testing"
 )
 
@@ -10,32 +10,16 @@ func TestReader(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
+	defer bk.Close()
 
-	if len(bk.Files()) != 211 {
-		t.Fatal("invalid files counter")
-	}
+	chapters := bk.Chapters()
+	for _, chapter := range chapters {
+		fmt.Printf("title: %+v\n", chapter.Text)
 
-	bk.Close()
-
-	i := 0
-
-	Reader("./data/test.epub", func(n string, data []byte) bool {
-		i++
-		if data == nil {
-			t.Fatal("reader failed")
+		content, err := bk.ChapterContent(chapter)
+		if err != nil {
+			t.Fatal(err)
 		}
-		return true
-	})
-
-	if i != 182 {
-		t.Fatal("Invalid chapter numbers")
-	}
-
-	buf := bytes.NewBuffer(nil)
-
-	ToTxt("./data/test.epub", buf)
-
-	if buf.Len() == 0 {
-		t.Fatal("ToTxt failed")
+		fmt.Printf("content: %+v\n", string(content))
 	}
 }

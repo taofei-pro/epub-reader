@@ -5,7 +5,6 @@ import (
 	"encoding/xml"
 	"errors"
 	"io"
-	"io/ioutil"
 	"path"
 )
 
@@ -28,6 +27,31 @@ func (p *Book) Files() []string {
 		fns = append(fns, f.Name)
 	}
 	return fns
+}
+
+func (p *Book) Chapters() []NavPoint {
+	points := make([]NavPoint, 0)
+	for _, pt := range p.Ncx.Points {
+		points = append(points, pt)
+		if len(pt.Points) > 0 {
+			points = append(points, pt.Points...)
+		}
+	}
+	return points
+}
+
+func (p *Book) ChapterContent(n NavPoint) ([]byte, error) {
+	return p.Reader(n.Content.Src)
+}
+
+func (p *Book) Reader(filename string) ([]byte, error) {
+	fd, err := p.Open(filename)
+	if err != nil {
+		return nil, err
+	}
+	defer fd.Close()
+
+	return io.ReadAll(fd)
 }
 
 func (p *Book) Close() {
@@ -55,8 +79,7 @@ func (p *Book) readBytes(n string) ([]byte, error) {
 	}
 	defer fd.Close()
 
-	return ioutil.ReadAll(fd)
-
+	return io.ReadAll(fd)
 }
 
 func (p *Book) open(n string) (io.ReadCloser, error) {
