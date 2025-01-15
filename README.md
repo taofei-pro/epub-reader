@@ -10,7 +10,7 @@ Golang epub reader library
 ## Install
 
 ```plaintext
-go get github.com/wmentor/epub
+go get github.com/taofei-pro/epub-reader
 ```
 
 ## Usage
@@ -22,19 +22,22 @@ import (
   "fmt"
   "os"
 
-  "github.com/wmentor/epub"
+  "github.com/taofei-pro/epub-reader"
 )
 
 func main() {
+  	bk, err := Open("./data/test.epub")
+	if err != nil {
+		panic(err)
+	}
+	defer bk.Close()
 
-  err := epub.Reader("./data/test.epub", func(chapter string, chapterHTML []byte) bool {
-    fmt.Println(chapter)
-  })
-  if err != nil {
-    panic(err)
-  }
+	chapters := bk.NavPoints()
+	for _, chapter := range chapters {
+		fmt.Printf("title: %s\n", chapter.Text)
 
-  // print epub to Stdout as text
-  epub.ToTxt("./data/test.epub", os.Stdout)
+		content := bk.NavPointContent(chapter)
+		fmt.Printf("content: %s\n", content)
+	}
 }
 ```

@@ -29,22 +29,17 @@ func (p *Book) Files() []string {
 	return fns
 }
 
-func (p *Book) Chapters() []NavPoint {
+func (p *Book) NavPoints() []NavPoint {
 	return p.Ncx.Points
 }
 
-func (p *Book) ChapterContent(n NavPoint) ([]byte, error) {
-	return p.Reader(n.Content.Src)
-}
-
-func (p *Book) Reader(filename string) ([]byte, error) {
-	fd, err := p.Open(filename)
+func (p *Book) NavPointContent(n NavPoint) string {
+	content, err := p.readFileBytes(n.Content.Src)
 	if err != nil {
-		return nil, err
+		return ""
 	}
-	defer fd.Close()
 
-	return io.ReadAll(fd)
+	return string(content)
 }
 
 func (p *Book) Close() {
@@ -69,6 +64,16 @@ func (p *Book) readBytes(n string) ([]byte, error) {
 	fd, err := p.open(n)
 	if err != nil {
 		return nil, nil
+	}
+	defer fd.Close()
+
+	return io.ReadAll(fd)
+}
+
+func (p *Book) readFileBytes(filename string) ([]byte, error) {
+	fd, err := p.Open(filename)
+	if err != nil {
+		return nil, err
 	}
 	defer fd.Close()
 

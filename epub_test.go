@@ -12,14 +12,11 @@ func TestReader(t *testing.T) {
 	}
 	defer bk.Close()
 
-	chapters := bk.Chapters()
+	chapters := bk.NavPoints()
 	for _, chapter := range chapters {
-		fmt.Printf("title: %+v\n", chapter.Text)
+		fmt.Printf("title: %s\n", chapter.Text)
 
-		content, err := bk.ChapterContent(chapter)
-		if err != nil {
-			t.Fatal(err)
-		}
-		fmt.Printf("content: %+v\n", string(content))
+		content := bk.NavPointContent(chapter)
+		fmt.Printf("content: %s\n", content)
 	}
 }
