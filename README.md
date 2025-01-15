@@ -19,25 +19,25 @@ go get github.com/taofei-pro/epub-reader
 package main
 
 import (
-	"fmt"
-	"os"
-	
-	"github.com/taofei-pro/epub-reader"
+  "fmt"
+  "os"
+
+  "github.com/taofei-pro/epub-reader"
 )
 
 func main() {
-	bk, err := Open("./data/test.epub")
-	if err != nil {
-		panic(err)
-	}
-	defer bk.Close()
+  bk, err := Open("./data/test.epub")
+  if err != nil {
+    panic(err)
+  }
+  defer bk.Close()
 
-	chapters := bk.NavPoints()
-	for _, chapter := range chapters {
-		fmt.Printf("title: %s\n", chapter.Text)
+  chapters := bk.NavPoints()
+  for _, chapter := range chapters {
+    fmt.Printf("title: %s\n", chapter.Text)
 
-		content := bk.NavPointContent(chapter)
-		fmt.Printf("content: %s\n", content)
-	}
+    content := bk.NavPointContent(chapter)
+    fmt.Printf("content: %s\n", content)
+  }
 }
 ```
