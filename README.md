@@ -4,8 +4,8 @@ Golang epub reader library
 
 ## Summary
 
-* Written on pure Go
-* Require Go version >= 1.14
+- Written on pure Go
+- Require Go version >= 1.14
 
 ## Install
 
@@ -19,14 +19,14 @@ go get github.com/taofei-pro/epub-reader
 package main
 
 import (
-  "fmt"
-  "os"
-
-  "github.com/taofei-pro/epub-reader"
+	"fmt"
+	"os"
+	
+	"github.com/taofei-pro/epub-reader"
 )
 
 func main() {
-  	bk, err := Open("./data/test.epub")
+	bk, err := Open("./data/test.epub")
 	if err != nil {
 		panic(err)
 	}
