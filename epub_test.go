@@ -18,5 +18,8 @@ func TestReader(t *testing.T) {
 
 		content := bk.NavPointContent(chapter)
 		fmt.Printf("content: %s\n", content)
+
+		txt := XmlToTxt(content)
+		fmt.Printf("txt: %s\n", txt)
 	}
 }
